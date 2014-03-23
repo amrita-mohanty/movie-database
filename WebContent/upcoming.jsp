@@ -3,8 +3,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Upcoming Movies</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Upcoming Movies</title>
+
+	<link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css"/>
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css"/>
+	<link rel="stylesheet" href="css/bootstrap.css" type="text/css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="//datatables.net/download/build/nightly/jquery.dataTables.js"></script>
+		
 	<style type="text/css">
 		th{
 			background-color: #A9D0F5;	
@@ -12,7 +22,14 @@
 	</style>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" > </script>
 	<script type="text/javascript">
-	
+		var example=jQuery.noConflict();
+		$(document).ready(function() {
+			$('#upcomingMovieListTable').DataTable();
+			$('#inTheatreMovieListTable').DataTable();
+		});
+	</script>
+	<script type="text/javascript">
+
 		var popularloaded = 0;
 		var upcomingloaded = 0;
 	
@@ -22,7 +39,7 @@
 			getInTheatreMovieList();
 			getUpcomingMovieList();
 		}
-	
+		
 		function getInTheatreMovieList(){
 			//alert("Inside searchCallback() method");
 			
@@ -30,10 +47,9 @@
 			var baseUrl = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?";
 
 			// construct the uri with our apikey
-			var moviesSearchUrl = baseUrl + 'apikey=' + apikey + "&page_limit=10";
+			var moviesSearchUrl = baseUrl + 'apikey=' + apikey;
 			
 			$(document).ready(function() {
-
 			  // send off the query
 			  $.ajax({
 			    url: moviesSearchUrl,
@@ -49,12 +65,15 @@
             $('inTheatreMovieListTable').append('Found ' + data.total + " movies");
             //alert("'Found ' + data.total");
             var movies = data.movies;
-            $.each(movies, function(index, movie) {
-                $('#inTheatreMovieListTable').append(
-                '<tr><td class="ajaxfilmlisttitle"><h3><a href="movieDetails.jsp?movie_id=' + movie.id +
-                '">' + movie.title +
-                '</td><td class="ajaxfilmlistinfo">' + movie.mpaa_rating +
-                '</td><td>' + movie.ratings.critics_score + '</td></tr>');
+            $.each(movies, function(index, movie) 
+            {
+                $('#inTheatreMovieListTable').dataTable().fnAddData(
+                	[
+                		'<a href="movieDetails.jsp?movie_id=' + movie.id + '">' + movie.title,
+                		movie.mpaa_rating,
+                		movie.ratings.critics_score
+                	]
+                );
             });
             
             popularloaded = 1;
@@ -70,10 +89,9 @@
 			var baseUrl = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?";
 
 			// construct the uri with our apikey
-			var moviesSearchUrl = baseUrl + 'apikey=' + apikey + "&page_limit=10";
+			var moviesSearchUrl = baseUrl + 'apikey=' + apikey;
 			
-			$(document).ready(function() {
-
+			$(document).ready(function() { 
 			  // send off the query
 			  $.ajax({
 			    url: moviesSearchUrl,
@@ -90,11 +108,13 @@
             //alert("'Found ' + data.total");
             var movies = data.movies;
             $.each(movies, function(index, movie) {
-                $('#upcomingMovieListTable').append(
-                '<tr><td class="ajaxfilmlisttitle"><h3><a href="movieDetails.jsp?movie_id=' + movie.id +
-                '">' +  movie.title +
-                '</td><td class="ajaxfilmlistinfo">' + movie.mpaa_rating +
-                '</td><td>' + movie.release_dates.theater + '</td></tr>');
+            	$('#upcomingMovieListTable').dataTable().fnAddData(
+                   	[
+                   		'<a href="movieDetails.jsp?movie_id=' + movie.id + '">' + movie.title,
+                   		movie.mpaa_rating,
+                   		movie.release_dates.theater
+                   	]
+                 );
             });
             
             upcomingloaded = 1;
@@ -103,39 +123,42 @@
             }
         };
 	
-	
 	</script>
-	
 	
 
 </head>
 <body onload="populateTables()">
 	<h1>Movie Dashboard</h1>
-	<span id="loading" style="display:none"><h2><font color="green">Loading...</font></h2></span>
-	<table width="100%">
-		<tr>
-			<td width="45%">
-				<h3>In Theaters</h3>
-				<table id="inTheatreMovieListTable" border="1"  cellpadding="0" cellspacing="0">
-					<tr>
-						<th> Title </th>
-						<th> Rating </th>
-						<th> Score </th>
-					</tr>
-				</table>
-			</td>
-			<td width="45%">
-				<h3>Upcoming Movies</h3>
-				<table id="upcomingMovieListTable" border="1" width="45%" cellpadding="0" cellspacing="0">
-					<tr>
-						<th> Title </th>
-						<th> Rating </th>
-						<th> Date </th>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	
-	</table>
+	<div class="container">
+		<span id="loading" style="display:none"><h2><font color="green">Loading...</font></h2></span>
+		<table width="100%" cellpadding="5%" height="100%">
+			<tr>
+				<td width="30%" height="100%">
+					<h3>In Theaters</h3>
+					<table id="inTheatreMovieListTable" class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th> Title </th>
+							<th> Rating </th>
+							<th> Score </th>
+						</tr>
+						</thead>
+					</table>
+				</td>
+				<td width="30%" height="100%">
+					<h3>Upcoming Movies</h3>
+					<table id="upcomingMovieListTable" class="table table-striped table-bordered">
+						<thead>
+						<tr>
+							<th> Title </th>
+							<th> Rating </th>
+							<th> Date </th>
+						</tr>
+						</thead>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
 </body>
 </html>

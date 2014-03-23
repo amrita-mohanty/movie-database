@@ -5,10 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Upcoming Movies</title>
+
 	<style type="text/css">
 		th{
 			background-color: #A9D0F5;	
 		}
+		
+		/* img{
+			height:100%;
+			width: 100%
+		} */
 	</style>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" > </script>
 	<script type="text/javascript">
@@ -43,10 +49,16 @@
         function inTheatreCallback(data) {
         	$('upcomingMovieListTable').append('Found ' + data.title + " movie");
         	$('#movieTitle').append(data.title);
-        	$('#movieImg').append("<img src='" + data.posters.thumbnail + "' />");
-            $('#movieDetails').append("<tr><td>Critic Score : " + data.ratings.critics_score + "</td><td> Audience Score : " + 
-         		   data.ratings.audience_score + "</td></tr><tr><td>Runtime: " + data.runtime + "</td><td>Rating : " +
-         		   data.ratings.critics_rating + "</td></tr><tr><td>Synopsis : <br>" + data.synopsis + "</td></tr>");
+        	/* $('#movieImg').append("<img src='" + data.posters.thumbnail + "' />"); */
+            $('#movieDetails').append("<tr><td width='30%'><img src='" + data.posters.thumbnail + "' /></td>" +
+            		"<td><table width='100%'>" +
+            		
+            		
+            		
+            		"<tr><td width='40%'>Critic Score : " + data.ratings.critics_score + "</td><td> Audience Score : " + 
+         		   data.ratings.audience_score + "</td></tr><tr><td  width='40%'>Runtime: " + data.runtime + "</td><td>Rating : " +
+         		   data.ratings.critics_rating + "</td></tr><tr><td colspan='2'>Synopsis : <br>" + data.synopsis + "</td></tr>" +
+         		   "</table></td></tr>");
 
             popularloaded = 1;
             if (popularloaded > 0) {
@@ -63,15 +75,6 @@
 	<span id="loading" style="display:none"><h2><font color="green">Loading...</font></h2></span>
 	<h3 id="movieTitle"></h3>
 	<table width="100%" id="movieDetails">
-		<tr>
-			<td id="movieImg" width="35%">
-				
-			</td>
-			<td width=60%>
-				<table id="movieDetails">
-				</table>
-			</td>
-		</tr>
 	</table>
 </body>
 </html>
