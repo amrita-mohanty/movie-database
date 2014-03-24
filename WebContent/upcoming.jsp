@@ -34,15 +34,12 @@
 		var upcomingloaded = 0;
 	
 		function populateTables(){
-			//alert("populateTables()");
 			 $('#loading').show();
 			getInTheatreMovieList();
 			getUpcomingMovieList();
 		}
 		
 		function getInTheatreMovieList(){
-			//alert("Inside searchCallback() method");
-			
 			var apikey = "kxv87aj2arknftqf6ywpj2v5";
 			var baseUrl = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?";
 
@@ -61,9 +58,7 @@
 		
 		// receives the results
         function inTheatreCallback(data) {
-        	//alert("Inside inTheatreCallback() method");
             $('inTheatreMovieListTable').append('Found ' + data.total + " movies");
-            //alert("'Found ' + data.total");
             var movies = data.movies;
             $.each(movies, function(index, movie) 
             {
@@ -83,8 +78,6 @@
         };
         
         function getUpcomingMovieList(){
-			//alert("getUpcomingMovieList()");
-			
 			var apikey = "kxv87aj2arknftqf6ywpj2v5";
 			var baseUrl = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?";
 
@@ -103,9 +96,7 @@
 		
 		// receives the results
         function upcomingCallback(data) {
-        	//alert("Inside upcomingCallback() method");
             $('upcomingMovieListTable').append('Found ' + data.total + " movies");
-            //alert("'Found ' + data.total");
             var movies = data.movies;
             $.each(movies, function(index, movie) {
             	$('#upcomingMovieListTable').dataTable().fnAddData(
@@ -122,30 +113,15 @@
 	            $('#loading').hide();
             }
         };
-	
 	</script>
-	
-
 </head>
 <body onload="populateTables()">
-	<h1>Movie Dashboard</h1>
+	<h1>&nbsp;&nbsp;&nbsp;&nbsp;Movie Dashboard</h1>
 	<div class="container">
 		<span id="loading" style="display:none"><h2><font color="green">Loading...</font></h2></span>
 		<table width="100%" cellpadding="5%" height="100%">
 			<tr>
-				<td width="30%" height="100%">
-					<h3>In Theaters</h3>
-					<table id="inTheatreMovieListTable" class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th> Title </th>
-							<th> Rating </th>
-							<th> Score </th>
-						</tr>
-						</thead>
-					</table>
-				</td>
-				<td width="30%" height="100%">
+				<td width="30%" >
 					<h3>Upcoming Movies</h3>
 					<table id="upcomingMovieListTable" class="table table-striped table-bordered">
 						<thead>
@@ -153,6 +129,18 @@
 							<th> Title </th>
 							<th> Rating </th>
 							<th> Date </th>
+						</tr>
+						</thead>
+					</table>
+				</td>
+				<td width="30%">
+					<h3>In Theaters</h3>
+					<table id="inTheatreMovieListTable" class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th> Title </th>
+							<th> Rating </th>
+							<th> Score </th>
 						</tr>
 						</thead>
 					</table>
